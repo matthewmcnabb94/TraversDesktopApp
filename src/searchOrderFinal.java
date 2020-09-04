@@ -2,12 +2,14 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.security.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -36,7 +38,7 @@ public class searchOrderFinal extends javax.swing.JFrame {
         initComponents();   
     }
     
-    public searchOrderFinal(String id) {
+    public searchOrderFinal(String id) throws ClassNotFoundException {
         initComponents();   
         receivedId = id;
         
@@ -82,6 +84,7 @@ public class searchOrderFinal extends javax.swing.JFrame {
         jTextField1.setText("jTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Search an order");
 
         cName.setEditable(false);
 
@@ -209,9 +212,10 @@ public class searchOrderFinal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void deleteData(String Id){
+    private void deleteData(String Id) throws ClassNotFoundException{
         
         boolean cFound = false;
+        boolean cFound1 = false;
         String formattedCName = null;
         
         String hostName = "77.68.122.181";
@@ -225,27 +229,24 @@ public class searchOrderFinal extends javax.swing.JFrame {
             out.println("READ," + Id);
             out.flush();
 
-            InputStreamReader isr = new InputStreamReader(kkSocket.getInputStream());
-            BufferedReader BR = new BufferedReader(isr);
-            String ResultSet = BR.readLine();
-            if (ResultSet != null) {
+//            InputStreamReader isr = new InputStreamReader(kkSocket.getInputStream());
+//            BufferedReader BR = new BufferedReader(isr);
+//            String ResultSet = BR.readLine();
+            ObjectInputStream object = new ObjectInputStream(kkSocket.getInputStream());
+            Object obj = object.readObject();
+            ArrayList<String[]> data = new ArrayList<>();
+            data = (ArrayList<String[]>) obj;
+            System.out.println("The result set is " + data.size());
+            
+            
+            
+            
+            for (String[] rows : data) {
+                String[] variables = rows;
 
-                String str = ResultSet;
-                String[] variables = str.split(",");
+                String customerName = variables[1];
+                String date = variables[2];
                 
-                System.out.println("Variables are: "+variables[0]);
-                String customerName = variables[0];
-                
-                if(customerName.contains("�� "))
-                {
-                    cFound = true;
-                    formattedCName = customerName.replace("�� ", "");
-                }
-                
-                
-                
-                System.out.println("Customer name is: "+customerName);
-                String date = variables[1];
                 
                 try{
                     
@@ -258,26 +259,17 @@ public class searchOrderFinal extends javax.swing.JFrame {
                     System.out.println("Exception: "+e.getMessage());   
                 }
                 
-
-                String vehicleDetails = variables[2];
-                String turboPartNumber = variables[3];
-                String price = variables[4];
-                String payment = variables[5];
-                String fittingRequired = variables[6];
-                String orderStartedDate = variables[7];
-                
-
-                if(cFound)
-                {
-                    cName.setText(formattedCName);
-                }
-                else
-                {
-                    cName.setText(customerName);
-                }
                 
                 
                 
+                String vehicleDetails = variables[3];
+                String turboPartNumber = variables[4];
+                String price = variables[5];
+                String payment = variables[6];
+                String fittingRequired = variables[7];
+                String orderStartedDate = variables[8];
+                
+                cName.setText(customerName);
                 vDetails.setText(vehicleDetails);
                 tModel.setText(turboPartNumber);
                 pe.setText(price);
@@ -285,13 +277,73 @@ public class searchOrderFinal extends javax.swing.JFrame {
                 fRequired.setText(fittingRequired);
                 timestamp.setText(orderStartedDate);
                 orderId.setText(Id);
+                
 
-
-
-            } else {
-                out.close();
-                System.exit(1);
+                
             }
+            
+            
+            
+            
+            
+            
+            
+//            
+//            if (ResultSet != null) {
+//
+//                String str = ResultSet;
+//                String[] variables = str.split(",");
+//                
+//                System.out.println("Variables are: "+variables[0]);
+//                String customerName = variables[0];
+//                
+//                if(customerName.contains("�� "))
+//                {
+//                    cFound = true;
+//                    formattedCName = customerName.replace("�� ", "");
+//                }
+//                
+//                if(customerName.contains("¬í"))
+//                {
+//                    cFound1 = true;
+//                    formattedCName = customerName.replace("¬í", "");
+//                }
+//                
+//                
+//                
+//                System.out.println("Customer name is: "+customerName);
+//                String date = variables[1];
+//                
+//                
+//                
+//
+//                String vehicleDetails = variables[2];
+//                String turboPartNumber = variables[3];
+//                String price = variables[4];
+//                String payment = variables[5];
+//                String fittingRequired = variables[6];
+//                String orderStartedDate = variables[7];
+//                
+//
+//                if(cFound | cFound1)
+//                {
+//                    cName.setText(formattedCName);
+//                }
+//                else
+//                {
+//                    cName.setText(customerName);
+//                }
+//                
+//                
+//                
+//                
+//
+//
+//
+//            } else {
+//                out.close();
+//                System.exit(1);
+//            }
 
         } catch (UnknownHostException e1) {
             System.err.println("Don't know about host " + hostName);
