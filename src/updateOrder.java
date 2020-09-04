@@ -8,7 +8,7 @@
  *
  * @author matth
  */
-public class DeleteOrder extends javax.swing.JFrame {
+public class updateOrder extends javax.swing.JFrame {
     
     
     public String idToSend;
@@ -16,7 +16,7 @@ public class DeleteOrder extends javax.swing.JFrame {
     /**
      * Creates new form DeleteOrder
      */
-    public DeleteOrder() {
+    public updateOrder() {
         initComponents();
     }
 
@@ -38,7 +38,7 @@ public class DeleteOrder extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 255));
 
-        jButton2.setText("Delete");
+        jButton2.setText("Update");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -54,7 +54,7 @@ public class DeleteOrder extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2))
-                .addContainerGap(124, Short.MAX_VALUE))
+                .addContainerGap(120, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -84,8 +84,7 @@ public class DeleteOrder extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         String newId = id.getText();
-        new DeleteOrderFinal(newId).setVisible(true);
-        this.dispose();
+        new updateOrderFinal(newId).setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -118,7 +117,7 @@ public class DeleteOrder extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DeleteOrder().setVisible(true);
+                new updateOrder().setVisible(true);
             }
         });
     }

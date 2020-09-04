@@ -1,4 +1,5 @@
 
+import com.sun.jdi.connect.spi.Connection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,35 +20,28 @@ import org.jdatepicker.impl.UtilDateModel;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author matth
  */
-public class CreateOrder extends javax.swing.JFrame {
-    
-    private String customerName;
-    private String datePicked;
-    private String vehicleDetails;
-    private String turboModel;
-    private int price;
-    private String payment;
-    private String fittingRequired;
+public class updateOrderFinal extends javax.swing.JFrame {
+
+    private String receivedId;
     
 
     /**
      * Creates new form CreateOrder
      */
-    public CreateOrder() {
+    public updateOrderFinal() {
         initComponents();
-        
-        //method 1
-        String timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
-        System.out.println(timeStamp);
-        
-        timestamp.setText(timeStamp);
-        
-      
+    }
+
+    public updateOrderFinal(String id) {
+        initComponents();
+        receivedId = id;
+
+        deleteData(receivedId);
+
     }
 
     /**
@@ -67,7 +61,6 @@ public class CreateOrder extends javax.swing.JFrame {
         pe = new javax.swing.JTextField();
         p = new javax.swing.JTextField();
         fRequired = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -77,21 +70,13 @@ public class CreateOrder extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         timestamp = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
+        orderId = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         jTextField1.setText("jTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Create an order");
-        setBackground(new java.awt.Color(102, 102, 255));
-        setResizable(false);
-
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButton1.setText("Submit");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Customer Name");
@@ -119,6 +104,19 @@ public class CreateOrder extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel8.setText("Order Started Date");
 
+        orderId.setEditable(false);
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel9.setText("Order Number");
+
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButton1.setText("Update");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -127,33 +125,34 @@ public class CreateOrder extends javax.swing.JFrame {
                 .addContainerGap(11, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(cName, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel8))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(timestamp)
-                                    .addComponent(jXDatePicker1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-                                    .addComponent(vDetails)
-                                    .addComponent(tModel)
-                                    .addComponent(pe)
-                                    .addComponent(p)
-                                    .addComponent(fRequired))))
-                        .addContainerGap())
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(cName, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(207, 207, 207))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(timestamp)
+                            .addComponent(jXDatePicker1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                            .addComponent(vDetails)
+                            .addComponent(tModel)
+                            .addComponent(pe)
+                            .addComponent(p)
+                            .addComponent(fRequired)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(orderId, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton1)
+                                .addGap(26, 26, 26)))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,9 +189,12 @@ public class CreateOrder extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(timestamp, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(31, 31, 31))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(orderId, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9)
+                    .addComponent(jButton1))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         pack();
@@ -206,7 +208,6 @@ public class CreateOrder extends javax.swing.JFrame {
         
         if(!cName.getText().equals(""))
         {
-            customerName = cName.getText();
             formatCounter++;
         }
         else
@@ -219,11 +220,6 @@ public class CreateOrder extends javax.swing.JFrame {
         }       
         if(jXDatePicker1.getDate() != null)
         {
-            Calendar cals = Calendar.getInstance();
-            SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy");
-            String d = formater.format(jXDatePicker1.getDate());
-            System.out.println("Date from calendar = "+d);
-            datePicked = d;
             formatCounter++;
         }
         else
@@ -237,7 +233,6 @@ public class CreateOrder extends javax.swing.JFrame {
         
         if(!vDetails.getText().equals(""))
         {
-            vehicleDetails = vDetails.getText();
             formatCounter++;
         }
         else
@@ -251,7 +246,6 @@ public class CreateOrder extends javax.swing.JFrame {
         
         if(!tModel.getText().equals(""))
         {
-            turboModel = tModel.getText();
             formatCounter++;
         }
         else
@@ -268,7 +262,6 @@ public class CreateOrder extends javax.swing.JFrame {
         if(!pe.getText().equals(""))
         {
             formatCounter++;
-            price = Integer.parseInt(pe.getText());
         }
         else
         {
@@ -282,7 +275,6 @@ public class CreateOrder extends javax.swing.JFrame {
         if(!p.getText().equals(""))
         {
             formatCounter++;
-            payment = p.getText();
         }
         else
         {
@@ -296,7 +288,6 @@ public class CreateOrder extends javax.swing.JFrame {
         if(!fRequired.getText().equals(""))
         {
             formatCounter++;
-            fittingRequired = fRequired.getText();
         }
         else
         {
@@ -314,76 +305,179 @@ public class CreateOrder extends javax.swing.JFrame {
         if(formatCounter == 7)
         {
             System.out.println("Information ok. Sending.....");
-            insertData();
+            updateData();
         }
         
-        System.out.println("Date is: "+datePicked);
         
         
-       
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void insertData(){
-     
+    private void deleteData(String Id) {
+        
+        boolean cFound = false;
+        String formattedCName = null;
 
-     
-        //create
-        String protocolMessage = "CREATE,";
-        protocolMessage += "('" + cName.getText().trim() + "'";
-        protocolMessage += ",'" + datePicked + "'";
-        protocolMessage += ",'" + vDetails.getText() + "'";
-        protocolMessage += ",'" + tModel.getText() + "'";
-        protocolMessage += ",'" + pe.getText() + "'";
-        protocolMessage += ",'" + p.getText() + "'";
-        protocolMessage += ",'" + fRequired.getText() + "'";
-        protocolMessage += ",'" + timestamp.getText() + "'";
-        protocolMessage += ")" + "\n";
-     
+        String hostName = "77.68.122.181";
+        int port = 80;
+        try {
+
+            Socket kkSocket = new Socket(hostName, port);
+            PrintWriter out = new PrintWriter(kkSocket.getOutputStream(), true);
+
+            System.out.println("The id: " + Id + " has been entered");
+            out.println("READ," + Id);
+            out.flush();
+
+            InputStreamReader isr = new InputStreamReader(kkSocket.getInputStream());
+            BufferedReader BR = new BufferedReader(isr);
+            String ResultSet = BR.readLine();
+            System.out.println("The result set is " + ResultSet);
+            if (ResultSet != null) {
+
+                String str = ResultSet;
+                
+                
+                
+                
+                String[] variables = str.split(",");
+                String customerName = variables[0];
+                
+                if(customerName.contains("�� "))
+                {
+                    
+                    formattedCName = customerName.replace("�� ", "");
+                    cFound = true;
+                }
+                
+                String date = variables[1];
+
+                try {
+
+                    java.util.Date dateF = new SimpleDateFormat("dd-MM-yyyy").parse(date);
+
+                    jXDatePicker1.setDate(dateF);
+
+                } catch (ParseException e) {
+                    System.out.println("Exception: " + e.getMessage());
+                }
+
+                String vehicleDetails = variables[2];
+                String turboPartNumber = variables[3];
+                String price = variables[4];
+                String payment = variables[5];
+                String fittingRequired = variables[6];
+                String orderStartedDate = variables[7];
+
+                
+                if(cFound)
+                {
+                    cName.setText(formattedCName);
+                }
+                else
+                {
+                    cName.setText(customerName);
+                }
+                
+
+                vDetails.setText(vehicleDetails);
+                tModel.setText(turboPartNumber);
+                pe.setText(price);
+                p.setText(payment);
+                fRequired.setText(fittingRequired);
+                timestamp.setText(orderStartedDate);
+                orderId.setText(Id);
+
+            } else {
+                out.close();
+                System.exit(1);
+            }
+
+        } catch (UnknownHostException e1) {
+            System.err.println("Don't know about host " + hostName);
+            System.exit(1);
+        } catch (IOException e2) {
+            System.err.println("Couldn't get I/O for the connection to "
+                    + hostName);
+            System.exit(1);
+        }
+
+    }
+
+    private void updateData() {
+
+        String protocolMessage = "UPDATE,";
+        protocolMessage += "orders ";
+        protocolMessage += "set ";
+        protocolMessage += "customerName='" + cName.getText();
+
+        SimpleDateFormat formater = new SimpleDateFormat("dd-MM-yyyy");
+        String d = formater.format(jXDatePicker1.getDate());
+
+        protocolMessage += "',date='" + d;
+        protocolMessage += "' ,vehicleDetails='" + vDetails.getText();
+        protocolMessage += "' ,turboPartNumber='" + tModel.getText();
+        protocolMessage += "' ,price='" + pe.getText();
+        protocolMessage += "' ,payment='" + p.getText();
+        protocolMessage += "' ,fittingRequired='" + fRequired.getText();
+        protocolMessage += "' where";
+        protocolMessage += " Id ='" + orderId.getText();
+        protocolMessage += "'" + "\n";
+
         String hostName = "77.68.122.181";
         int port = 80;
 
-     try {
-         Socket kkSocket = new Socket(hostName, port);
-         PrintWriter out = new PrintWriter(kkSocket.getOutputStream(), true);          
-         
-         System.out.println("Insert Button Has Been Pressed");
-         System.out.println("Client is Sending: " + protocolMessage);
-         
-         out.println(protocolMessage);           
-         out.flush(); 
-         
-         InputStreamReader isr = new InputStreamReader(kkSocket.getInputStream());
-         BufferedReader BR = new BufferedReader(isr);
-         String ResultSet = BR.readLine();
-         
-         
-         
-         if(ResultSet != null)
-         {
-             JOptionPane.showMessageDialog(null, ResultSet, "Success",JOptionPane.INFORMATION_MESSAGE);
-             out.close();
-         }
-         
-        else
-         {
-             JOptionPane.showMessageDialog(null, "Entry not sucessfull");
-         }
-         
-         
-         
-         
-     } 
-     catch (UnknownHostException e1) {
-         JOptionPane.showMessageDialog(null, "Don't know about host " + hostName);
-         System.exit(1);
-     } 
-     catch (IOException e2) {
-         JOptionPane.showMessageDialog(null, "Couldn't get I/O for the connection to " +
-             hostName);
-         System.exit(1);
-     }
- }
+        try {
+            Socket kkSocket = new Socket(hostName, port);
+            PrintWriter out = new PrintWriter(kkSocket.getOutputStream(), true);
+
+            System.out.println("Update Button Has Been Pressed");
+            System.out.println("Client is Sending: " + protocolMessage);
+            out.println(protocolMessage);
+            out.flush();
+            //out.close();
+
+            InputStreamReader isr = new InputStreamReader(kkSocket.getInputStream());
+            BufferedReader BR = new BufferedReader(isr);
+            String ResultSet = BR.readLine();
+
+            if (ResultSet != null) {
+                if(ResultSet.contains("�� "))
+                {
+                    String newMessage = ResultSet.replace("�� ", "");
+                    JOptionPane.showMessageDialog(null, newMessage);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, ResultSet);
+                }
+                
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Update not sucessfull");
+            }
+
+        } catch (UnknownHostException e1) {
+            System.err.println("Don't know about host " + hostName);
+            System.exit(1);
+        } catch (IOException e2) {
+            System.err.println("Couldn't get I/O for the connection to "
+                    + hostName);
+            System.exit(1);
+        }
+    }
+    
+    
     
     
     
@@ -419,7 +513,7 @@ public class CreateOrder extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CreateOrder().setVisible(true);
+                new updateOrderFinal().setVisible(true);
             }
         });
     }
@@ -436,8 +530,10 @@ public class CreateOrder extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JTextField jTextField1;
     private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
+    private javax.swing.JTextField orderId;
     private javax.swing.JTextField p;
     private javax.swing.JTextField pe;
     private javax.swing.JTextField tModel;
@@ -445,3 +541,7 @@ public class CreateOrder extends javax.swing.JFrame {
     private javax.swing.JTextField vDetails;
     // End of variables declaration//GEN-END:variables
 }
+
+
+
+
