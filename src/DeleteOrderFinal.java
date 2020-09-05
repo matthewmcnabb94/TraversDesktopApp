@@ -2,12 +2,14 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.security.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -34,7 +36,7 @@ public class DeleteOrderFinal extends javax.swing.JFrame {
         initComponents();
     }
 
-    public DeleteOrderFinal(String id) {
+    public DeleteOrderFinal(String id) throws ClassNotFoundException {
         initComponents();
         receivedId = id;
 
@@ -222,70 +224,66 @@ public class DeleteOrderFinal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void deleteData(String Id) {
-
+    private void deleteData(String Id) throws ClassNotFoundException{
+        
         boolean cFound = false;
+        boolean cFound1 = false;
         String formattedCName = null;
         
         String hostName = "77.68.122.181";
         int port = 80;
         try {
 
+            
             Socket kkSocket = new Socket(hostName, port);
             PrintWriter out = new PrintWriter(kkSocket.getOutputStream(), true);
 
-            System.out.println("The id: " + Id + " has been entered");
             out.println("READ," + Id);
             out.flush();
 
-            InputStreamReader isr = new InputStreamReader(kkSocket.getInputStream());
-            BufferedReader BR = new BufferedReader(isr);
-            String ResultSet = BR.readLine();
-            System.out.println("The result set is " + ResultSet);
-            if (ResultSet != null) {
+            ObjectInputStream object = new ObjectInputStream(kkSocket.getInputStream());
+            Object obj = object.readObject();
+            ArrayList<String[]> data = new ArrayList<>();
+            data = (ArrayList<String[]>) obj;
+            System.out.println("The result set is " + data.size());
+            
+            if(data.isEmpty())
+            {
+                JOptionPane.showMessageDialog(null, "No order number found");
+            }
+            
+            
+            
+            
+            for (String[] rows : data) {
+                String[] variables = rows;
 
-                String str = ResultSet;
-                String[] variables = str.split(",");
-                String customerName = variables[0];
+                String customerName = variables[1];
+                String date = variables[2];
                 
                 
-                
-                
-                if(customerName.contains("�� "))
-                {
+                try{
                     
-                    formattedCName = customerName.replace("�� ", "");
-                    cFound = true;
-                }
-                
-                
-                
-                
-                
-                
-                
-                
-                String date = variables[1];
-
-                try {
-
                     java.util.Date dateF = new SimpleDateFormat("dd-MM-yyyy").parse(date);
-
+                    
                     jXDatePicker1.setDate(dateF);
-
-                } catch (ParseException e) {
-                    System.out.println("Exception is: " + e.getMessage());
+                    
+                }catch(ParseException e)
+                {
+                    System.out.println("Exception: "+e.getMessage());   
                 }
-
-                String vehicleDetails = variables[2];
-                String turboPartNumber = variables[3];
-                String price = variables[4];
-                String payment = variables[5];
-                String fittingRequired = variables[6];
-                String orderStartedDate = variables[7];
-
+                
+                
+                
+                
+                String vehicleDetails = variables[3];
+                String turboPartNumber = variables[4];
+                String price = variables[5];
+                String payment = variables[6];
+                String fittingRequired = variables[7];
+                String orderStartedDate = variables[8];
+                
                 cName.setText(customerName);
-
                 vDetails.setText(vehicleDetails);
                 tModel.setText(turboPartNumber);
                 pe.setText(price);
@@ -293,11 +291,13 @@ public class DeleteOrderFinal extends javax.swing.JFrame {
                 fRequired.setText(fittingRequired);
                 timestamp.setText(orderStartedDate);
                 orderId.setText(Id);
+                
 
-            } else {
-                out.close();
-                System.exit(1);
+                
             }
+            
+            
+      
 
         } catch (UnknownHostException e1) {
             System.err.println("Don't know about host " + hostName);
@@ -307,8 +307,8 @@ public class DeleteOrderFinal extends javax.swing.JFrame {
                     + hostName);
             System.exit(1);
         }
-
-    }
+       
+ }
 
     private void deleteData() {
 

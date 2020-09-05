@@ -238,6 +238,11 @@ public class searchOrderFinal extends javax.swing.JFrame {
             data = (ArrayList<String[]>) obj;
             System.out.println("The result set is " + data.size());
             
+            if(data.isEmpty())
+            {
+                JOptionPane.showMessageDialog(null, "No order number found");
+            }
+            
             
             
             
@@ -284,74 +289,17 @@ public class searchOrderFinal extends javax.swing.JFrame {
             
             
             
-            
-            
-            
-            
-//            
-//            if (ResultSet != null) {
-//
-//                String str = ResultSet;
-//                String[] variables = str.split(",");
-//                
-//                System.out.println("Variables are: "+variables[0]);
-//                String customerName = variables[0];
-//                
-//                if(customerName.contains("�� "))
-//                {
-//                    cFound = true;
-//                    formattedCName = customerName.replace("�� ", "");
-//                }
-//                
-//                if(customerName.contains("¬í"))
-//                {
-//                    cFound1 = true;
-//                    formattedCName = customerName.replace("¬í", "");
-//                }
-//                
-//                
-//                
-//                System.out.println("Customer name is: "+customerName);
-//                String date = variables[1];
-//                
-//                
-//                
-//
-//                String vehicleDetails = variables[2];
-//                String turboPartNumber = variables[3];
-//                String price = variables[4];
-//                String payment = variables[5];
-//                String fittingRequired = variables[6];
-//                String orderStartedDate = variables[7];
-//                
-//
-//                if(cFound | cFound1)
-//                {
-//                    cName.setText(formattedCName);
-//                }
-//                else
-//                {
-//                    cName.setText(customerName);
-//                }
-//                
-//                
-//                
-//                
-//
-//
-//
-//            } else {
-//                out.close();
-//                System.exit(1);
-//            }
+
 
         } catch (UnknownHostException e1) {
             System.err.println("Don't know about host " + hostName);
-            System.exit(1);
+            JOptionPane.showMessageDialog(null, "Don't know about host " + hostName);
         } catch (IOException e2) {
             System.err.println("Couldn't get I/O for the connection to "
                     + hostName);
-            System.exit(1);
+            JOptionPane.showMessageDialog(null, "Couldn't get I/O for the connection to "
+                    + hostName);
+            
         }
        
  }

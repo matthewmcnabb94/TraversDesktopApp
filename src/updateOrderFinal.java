@@ -1,14 +1,17 @@
 
+
 import com.sun.jdi.connect.spi.Connection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.security.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -27,6 +30,7 @@ import org.jdatepicker.impl.UtilDateModel;
 public class updateOrderFinal extends javax.swing.JFrame {
 
     private String receivedId;
+    private double price;
     
 
     /**
@@ -34,9 +38,12 @@ public class updateOrderFinal extends javax.swing.JFrame {
      */
     public updateOrderFinal() {
         initComponents();
+        
+        jXDatePicker1.getEditor().setEditable(false);
+        
     }
 
-    public updateOrderFinal(String id) {
+    public updateOrderFinal(String id) throws ClassNotFoundException {
         initComponents();
         receivedId = id;
 
@@ -205,6 +212,7 @@ public class updateOrderFinal extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         int formatCounter = 0;
+        boolean priceok = false;
         
         if(!cName.getText().equals(""))
         {
@@ -262,6 +270,21 @@ public class updateOrderFinal extends javax.swing.JFrame {
         if(!pe.getText().equals(""))
         {
             formatCounter++;
+            
+            if(isNumeric(pe.getText()))
+            {
+               price = Double.parseDouble(pe.getText());
+               priceok = true;
+               
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null,
+                    "The price field must contain a number",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+            
         }
         else
         {
@@ -302,7 +325,7 @@ public class updateOrderFinal extends javax.swing.JFrame {
         
         System.out.println("Format counter is: "+formatCounter);
         
-        if(formatCounter == 7)
+        if(formatCounter == 7 && priceok)
         {
             System.out.println("Information ok. Sending.....");
             updateData();
@@ -310,86 +333,92 @@ public class updateOrderFinal extends javax.swing.JFrame {
         
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void deleteData(String Id) {
+    public static boolean isNumeric(String strNum) {
+    if (strNum == null) {
+        return false;
+    }
+    try {
+        double d = Double.parseDouble(strNum);
+    } catch (NumberFormatException nfe) {
+        return false;
+    }
+    return true;
+}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    private void deleteData(String Id) throws ClassNotFoundException{
         
         boolean cFound = false;
+        boolean cFound1 = false;
         String formattedCName = null;
-
+        
         String hostName = "77.68.122.181";
         int port = 80;
         try {
 
+            
             Socket kkSocket = new Socket(hostName, port);
             PrintWriter out = new PrintWriter(kkSocket.getOutputStream(), true);
 
-            System.out.println("The id: " + Id + " has been entered");
             out.println("READ," + Id);
             out.flush();
 
-            InputStreamReader isr = new InputStreamReader(kkSocket.getInputStream());
-            BufferedReader BR = new BufferedReader(isr);
-            String ResultSet = BR.readLine();
-            System.out.println("The result set is " + ResultSet);
-            if (ResultSet != null) {
+//            InputStreamReader isr = new InputStreamReader(kkSocket.getInputStream());
+//            BufferedReader BR = new BufferedReader(isr);
+//            String ResultSet = BR.readLine();
+            ObjectInputStream object = new ObjectInputStream(kkSocket.getInputStream());
+            Object obj = object.readObject();
+            ArrayList<String[]> data = new ArrayList<>();
+            data = (ArrayList<String[]>) obj;
+            System.out.println("The result set is " + data.size());
+            
+            if(data.isEmpty())
+            {
+                JOptionPane.showMessageDialog(null, "No order number found");
+            }
+            
+            
+            
+            
+            for (String[] rows : data) {
+                String[] variables = rows;
 
-                String str = ResultSet;
+                String customerName = variables[1];
+                String date = variables[2];
                 
                 
-                
-                
-                String[] variables = str.split(",");
-                String customerName = variables[0];
-                
-                if(customerName.contains("�� "))
-                {
+                try{
                     
-                    formattedCName = customerName.replace("�� ", "");
-                    cFound = true;
-                }
-                
-                String date = variables[1];
-
-                try {
-
                     java.util.Date dateF = new SimpleDateFormat("dd-MM-yyyy").parse(date);
-
+                    
                     jXDatePicker1.setDate(dateF);
-
-                } catch (ParseException e) {
-                    System.out.println("Exception: " + e.getMessage());
-                }
-
-                String vehicleDetails = variables[2];
-                String turboPartNumber = variables[3];
-                String price = variables[4];
-                String payment = variables[5];
-                String fittingRequired = variables[6];
-                String orderStartedDate = variables[7];
-
-                
-                if(cFound)
+                    
+                }catch(ParseException e)
                 {
-                    cName.setText(formattedCName);
-                }
-                else
-                {
-                    cName.setText(customerName);
+                    System.out.println("Exception: "+e.getMessage());   
                 }
                 
-
+                
+                
+                
+                String vehicleDetails = variables[3];
+                String turboPartNumber = variables[4];
+                String price = variables[5];
+                String payment = variables[6];
+                String fittingRequired = variables[7];
+                String orderStartedDate = variables[8];
+                
+                cName.setText(customerName);
                 vDetails.setText(vehicleDetails);
                 tModel.setText(turboPartNumber);
                 pe.setText(price);
@@ -397,11 +426,12 @@ public class updateOrderFinal extends javax.swing.JFrame {
                 fRequired.setText(fittingRequired);
                 timestamp.setText(orderStartedDate);
                 orderId.setText(Id);
+                
 
-            } else {
-                out.close();
-                System.exit(1);
+                
             }
+            
+ 
 
         } catch (UnknownHostException e1) {
             System.err.println("Don't know about host " + hostName);
@@ -411,8 +441,8 @@ public class updateOrderFinal extends javax.swing.JFrame {
                     + hostName);
             System.exit(1);
         }
-
-    }
+       
+ }
 
     private void updateData() {
 
@@ -427,7 +457,7 @@ public class updateOrderFinal extends javax.swing.JFrame {
         protocolMessage += "',date='" + d;
         protocolMessage += "' ,vehicleDetails='" + vDetails.getText();
         protocolMessage += "' ,turboPartNumber='" + tModel.getText();
-        protocolMessage += "' ,price='" + pe.getText();
+        protocolMessage += "' ,price='" + price;
         protocolMessage += "' ,payment='" + p.getText();
         protocolMessage += "' ,fittingRequired='" + fRequired.getText();
         protocolMessage += "' where";

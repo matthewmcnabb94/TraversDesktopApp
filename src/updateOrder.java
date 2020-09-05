@@ -1,3 +1,7 @@
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -84,7 +88,11 @@ public class updateOrder extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         String newId = id.getText();
-        new updateOrderFinal(newId).setVisible(true);
+        try {
+            new updateOrderFinal(newId).setVisible(true);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(updateOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

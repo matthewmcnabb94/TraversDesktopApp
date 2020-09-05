@@ -2,12 +2,14 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.security.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -30,7 +32,7 @@ public class CreateOrder extends javax.swing.JFrame {
     private String datePicked;
     private String vehicleDetails;
     private String turboModel;
-    private int price;
+    private double price;
     private String payment;
     private String fittingRequired;
     
@@ -46,6 +48,8 @@ public class CreateOrder extends javax.swing.JFrame {
         System.out.println(timeStamp);
         
         timestamp.setText(timeStamp);
+        
+        jXDatePicker1.getEditor().setEditable(false);
         
       
     }
@@ -204,6 +208,8 @@ public class CreateOrder extends javax.swing.JFrame {
         
         int formatCounter = 0;
         
+        boolean priceok = false;
+        
         if(!cName.getText().equals(""))
         {
             customerName = cName.getText();
@@ -268,7 +274,21 @@ public class CreateOrder extends javax.swing.JFrame {
         if(!pe.getText().equals(""))
         {
             formatCounter++;
-            price = Integer.parseInt(pe.getText());
+            
+            if(isNumeric(pe.getText()))
+            {
+               price = Double.parseDouble(pe.getText());
+               priceok = true;
+               
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null,
+                    "The price field must contain a number",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+            
         }
         else
         {
@@ -311,7 +331,7 @@ public class CreateOrder extends javax.swing.JFrame {
         
         System.out.println("Format counter is: "+formatCounter);
         
-        if(formatCounter == 7)
+        if(formatCounter == 7 && priceok)
         {
             System.out.println("Information ok. Sending.....");
             insertData();
@@ -324,6 +344,30 @@ public class CreateOrder extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    
+    public static boolean isNumeric(String strNum) {
+    if (strNum == null) {
+        return false;
+    }
+    try {
+        double d = Double.parseDouble(strNum);
+    } catch (NumberFormatException nfe) {
+        return false;
+    }
+    return true;
+}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     private void insertData(){
      
 
@@ -353,35 +397,65 @@ public class CreateOrder extends javax.swing.JFrame {
          out.println(protocolMessage);           
          out.flush(); 
          
-         InputStreamReader isr = new InputStreamReader(kkSocket.getInputStream());
-         BufferedReader BR = new BufferedReader(isr);
-         String ResultSet = BR.readLine();
-         
-         
-         
-         if(ResultSet != null)
-         {
-             JOptionPane.showMessageDialog(null, ResultSet, "Success",JOptionPane.INFORMATION_MESSAGE);
-             out.close();
-         }
-         
-        else
-         {
-             JOptionPane.showMessageDialog(null, "Entry not sucessfull");
-         }
-         
+//         InputStreamReader isr = new InputStreamReader(kkSocket.getInputStream());
+//         BufferedReader BR = new BufferedReader(isr);
+//         String ResultSet = BR.readLine();
+
+
+
+            try{
+                
+                String messageFromServer = null;
+                ObjectInputStream object = new ObjectInputStream(kkSocket.getInputStream());
+                Object obj = object.readObject();
+                ArrayList<String[]> data = new ArrayList<>();
+                data = (ArrayList<String[]>) obj;
+                System.out.println("The result set is " + data.size());
+
+            
+                for (String[] rows : data) {
+                    String[] variables = rows;
+
+                    messageFromServer = variables[0];
+
+                }
+
+                if (messageFromServer != null) {
+                    JOptionPane.showMessageDialog(null, messageFromServer, "Success", JOptionPane.INFORMATION_MESSAGE);
+                    out.close();
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Entry not sucessfull");
+                }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            }catch(ClassNotFoundException e)
+            {
+                System.out.println("Exception: "+e.getMessage());
+            }
+            
+            
+            
+            
          
          
          
      } 
      catch (UnknownHostException e1) {
          JOptionPane.showMessageDialog(null, "Don't know about host " + hostName);
-         System.exit(1);
      } 
      catch (IOException e2) {
          JOptionPane.showMessageDialog(null, "Couldn't get I/O for the connection to " +
              hostName);
-         System.exit(1);
      }
  }
     

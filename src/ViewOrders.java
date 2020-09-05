@@ -190,6 +190,7 @@ public class ViewOrders extends javax.swing.JFrame {
         else
         {
             System.out.println("false");
+            JOptionPane.showMessageDialog(null, "Error exporting, try again.");
         }
 
     }//GEN-LAST:event_jButton2ActionPerformed

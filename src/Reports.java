@@ -32,6 +32,8 @@ public class Reports extends javax.swing.JFrame {
      */
     public Reports() {
         initComponents();
+        jXDatePicker1.getEditor().setEditable(false);
+        jXDatePicker2.getEditor().setEditable(false);
     }
 
     /**
@@ -73,7 +75,7 @@ public class Reports extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(0, 74, Short.MAX_VALUE)
+                .addGap(0, 70, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -86,7 +88,7 @@ public class Reports extends javax.swing.JFrame {
                         .addGap(33, 33, 33))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton2)
-                        .addGap(93, 93, 93))))
+                        .addGap(86, 86, 86))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,7 +123,8 @@ public class Reports extends javax.swing.JFrame {
 
     
     
-    public void generateReports(String sDate, String eDate) {
+    public boolean generateReports(String sDate, String eDate) {
+        
         try {
             String userd = System.getProperty("user.home");
             
@@ -180,10 +183,14 @@ public class Reports extends javax.swing.JFrame {
                 outp20.println(Id + "," + customerName + "," + date + "," + vehicleDetails + "," + turboPartNumber + "," + price + "," + payment + "," +fittingRequired + "," +orderStartedDate);
                 outp20.flush();
                 
+                
+                
 
             }
             
             outp20.close();
+            
+            return true;
             
             
             
@@ -205,6 +212,8 @@ public class Reports extends javax.swing.JFrame {
             e.printStackTrace();
 
         }
+        
+        return false;
     }
     
     
@@ -233,7 +242,14 @@ public class Reports extends javax.swing.JFrame {
             
             
             
-            generateReports(startDate,endDate);
+            if(generateReports(startDate,endDate))
+            {
+                JOptionPane.showMessageDialog(null, "Exported successfully");
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Error exporting, try again.");
+            }
             
             
             
