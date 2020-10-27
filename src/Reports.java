@@ -25,6 +25,9 @@ import javax.swing.JOptionPane;
 public class Reports extends javax.swing.JFrame {
     
     
+    public static String userd;
+    
+    
     
 
     /**
@@ -53,6 +56,7 @@ public class Reports extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Generate a report");
         setBackground(new java.awt.Color(102, 102, 255));
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 255));
@@ -126,7 +130,7 @@ public class Reports extends javax.swing.JFrame {
     public boolean generateReports(String sDate, String eDate) {
         
         try {
-            String userd = System.getProperty("user.home");
+            userd = System.getProperty("user.home");
             
             
             File f = new File(userd+"\\Desktop\\car\\OrdersReport\\OrdersReport.csv");
@@ -192,17 +196,6 @@ public class Reports extends javax.swing.JFrame {
             
             return true;
             
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            
 
         } catch (Exception e) {
 
@@ -244,7 +237,7 @@ public class Reports extends javax.swing.JFrame {
             
             if(generateReports(startDate,endDate))
             {
-                JOptionPane.showMessageDialog(null, "Exported successfully");
+                JOptionPane.showMessageDialog(null, "Exported successfully to locationL: "+userd+"\\Desktop\\car\\OrdersReport\\OrdersReport.csv");
             }
             else
             {
