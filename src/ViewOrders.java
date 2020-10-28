@@ -64,14 +64,14 @@ public class ViewOrders extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Order Number", "Customer Name", "Date due", "Vehicle Details", "Turbo Part Number", "Price", "Payment", "Fitting Required", "Order Started Date"
+                "Order Number", "Customer Name", "Date due", "Vehicle Details", "Turbo Part Number", "Price", "Payment", "Fitting Required", "Order Started Date", "Order Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -228,7 +228,7 @@ public class ViewOrders extends javax.swing.JFrame {
     public void listAllInformation() {
         try {
 
-            String hostName = "77.68.122.181";
+            String hostName = "3.16.15.26";
             int port = 80;
 
             Socket kkSocket = new Socket(hostName, port);
@@ -257,6 +257,7 @@ public class ViewOrders extends javax.swing.JFrame {
                 String payment = variables[6];
                 String fittingRequired = variables[7];
                 String orderStartedDate = variables[8];
+                String orderStatus = variables[9];
 
                 table.setValueAt((Id), row, 0);
                 table.setValueAt((customerName), row, 1);
@@ -267,6 +268,7 @@ public class ViewOrders extends javax.swing.JFrame {
                 table.setValueAt((payment), row, 6);
                 table.setValueAt((fittingRequired), row, 7);
                 table.setValueAt((orderStartedDate), row, 8);
+                table.setValueAt((orderStatus), row, 9);
 
                 row++;
             }
@@ -286,7 +288,7 @@ public class ViewOrders extends javax.swing.JFrame {
     public void addRowToJTable() {
         model = (DefaultTableModel) table.getModel();
         ArrayList<Order> list = ListOrders();
-        Object rowData[] = new Object[9];
+        Object rowData[] = new Object[10];
         for (int i = 0; i < list.size(); i++) {
             rowData[0] = list.get(i).id;
             rowData[1] = list.get(i).customerName;
@@ -297,6 +299,7 @@ public class ViewOrders extends javax.swing.JFrame {
             rowData[6] = list.get(i).payment;
             rowData[7] = list.get(i).fittingRequired;
             rowData[8] = list.get(i).orderStartedDate;
+            rowData[9] = list.get(i).orderStatus;
             model.addRow(rowData);
         }
 
@@ -307,7 +310,7 @@ public class ViewOrders extends javax.swing.JFrame {
         ArrayList<Order> list = new ArrayList<Order>();
         try {
 
-            String hostName = "77.68.122.181";
+            String hostName = "3.16.15.26";
             int port = 80;
 
             Socket kkSocket = new Socket(hostName, port);
@@ -337,8 +340,9 @@ public class ViewOrders extends javax.swing.JFrame {
                 String payment = variables[6];
                 String fittingRequired = variables[7];
                 String orderStartedDate = variables[8];
+                String orderStatus = variables[9];
 
-                Order order = new Order(Id, customerName, date, vehicleDetails, turboPartNumber, price, payment, fittingRequired, orderStartedDate);
+                Order order = new Order(Id, customerName, date, vehicleDetails, turboPartNumber, price, payment, fittingRequired, orderStartedDate, orderStatus);
                 list.add(order);
                 
 

@@ -80,6 +80,8 @@ public class updateOrderFinal extends javax.swing.JFrame {
         orderId = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jComboBoxO = new javax.swing.JComboBox<>();
+        jLabel10 = new javax.swing.JLabel();
 
         jTextField1.setText("jTextField1");
 
@@ -124,6 +126,9 @@ public class updateOrderFinal extends javax.swing.JFrame {
             }
         });
 
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel10.setText("Order Status");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -144,9 +149,11 @@ public class updateOrderFinal extends javax.swing.JFrame {
                             .addComponent(jLabel6)
                             .addComponent(jLabel7)
                             .addComponent(jLabel8)
-                            .addComponent(jLabel9))
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel10))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jComboBoxO, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(timestamp)
                             .addComponent(jXDatePicker1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
                             .addComponent(vDetails)
@@ -156,10 +163,12 @@ public class updateOrderFinal extends javax.swing.JFrame {
                             .addComponent(fRequired)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(orderId, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1)
                                 .addGap(26, 26, 26)))))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(195, 195, 195)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,9 +208,14 @@ public class updateOrderFinal extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(orderId, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9)
-                    .addComponent(jButton1))
-                .addContainerGap(36, Short.MAX_VALUE))
+                    .addComponent(jLabel9))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxO, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         pack();
@@ -362,7 +376,7 @@ public class updateOrderFinal extends javax.swing.JFrame {
         boolean cFound1 = false;
         String formattedCName = null;
         
-        String hostName = "77.68.122.181";
+        String hostName = "3.16.15.26";
         int port = 80;
         try {
 
@@ -417,6 +431,7 @@ public class updateOrderFinal extends javax.swing.JFrame {
                 String payment = variables[6];
                 String fittingRequired = variables[7];
                 String orderStartedDate = variables[8];
+                String orderStatus = variables[9];
                 
                 cName.setText(customerName);
                 vDetails.setText(vehicleDetails);
@@ -426,6 +441,16 @@ public class updateOrderFinal extends javax.swing.JFrame {
                 fRequired.setText(fittingRequired);
                 timestamp.setText(orderStartedDate);
                 orderId.setText(Id);
+                jComboBoxO.addItem(orderStatus);
+                
+                if(jComboBoxO.getSelectedItem().toString().equals("In progress"))
+                {
+                    jComboBoxO.addItem("Complete");
+                }
+                else
+                {
+                    jComboBoxO.addItem("In progress");
+                }
                 
 
                 
@@ -460,11 +485,12 @@ public class updateOrderFinal extends javax.swing.JFrame {
         protocolMessage += "' ,price='" + price;
         protocolMessage += "' ,payment='" + p.getText();
         protocolMessage += "' ,fittingRequired='" + fRequired.getText();
+        protocolMessage += "' ,orderStatus='" + jComboBoxO.getSelectedItem().toString();
         protocolMessage += "' where";
         protocolMessage += " Id ='" + orderId.getText();
         protocolMessage += "'" + "\n";
 
-        String hostName = "77.68.122.181";
+        String hostName = "3.16.15.26";
         int port = 80;
 
         try {
@@ -552,7 +578,9 @@ public class updateOrderFinal extends javax.swing.JFrame {
     private javax.swing.JTextField cName;
     private javax.swing.JTextField fRequired;
     private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> jComboBoxO;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

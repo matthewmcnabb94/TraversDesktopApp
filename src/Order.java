@@ -19,8 +19,9 @@ public class Order {
     public String payment;
     public String fittingRequired;
     public String orderStartedDate;
+    public String orderStatus;
 
-    public Order(String id, String customerName, String date, String vehicleDetails, String turboPartNumber, String price, String payment, String fittingRequired, String orderStartedDate) {
+    public Order(String id, String customerName, String date, String vehicleDetails, String turboPartNumber, String price, String payment, String fittingRequired, String orderStartedDate, String orderStatus) {
         this.id = id;
         this.customerName = customerName;
         this.date = date;
@@ -30,6 +31,7 @@ public class Order {
         this.payment = payment;
         this.fittingRequired = fittingRequired;
         this.orderStartedDate = orderStartedDate;
+        this.orderStatus = orderStatus;
     }
     
     

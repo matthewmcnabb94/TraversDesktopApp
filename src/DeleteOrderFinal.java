@@ -73,6 +73,8 @@ public class DeleteOrderFinal extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         orderId = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
+        jComboBoxOS = new javax.swing.JComboBox<>();
+        jLabel10 = new javax.swing.JLabel();
 
         jTextField1.setText("jTextField1");
 
@@ -131,6 +133,9 @@ public class DeleteOrderFinal extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel9.setText("Order Number");
 
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel10.setText("Order status");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -151,21 +156,25 @@ public class DeleteOrderFinal extends javax.swing.JFrame {
                             .addComponent(jLabel6)
                             .addComponent(jLabel7)
                             .addComponent(jLabel8)
-                            .addComponent(jLabel9))
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel10))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(timestamp)
-                            .addComponent(jXDatePicker1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-                            .addComponent(vDetails)
-                            .addComponent(tModel)
-                            .addComponent(pe)
-                            .addComponent(p)
-                            .addComponent(fRequired)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(orderId, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1)
-                                .addGap(23, 23, 23)))))
+                                .addComponent(jComboBoxOS, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(35, 35, 35)
+                                .addComponent(jButton1))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(timestamp)
+                                .addComponent(jXDatePicker1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                                .addComponent(vDetails)
+                                .addComponent(tModel)
+                                .addComponent(pe)
+                                .addComponent(p)
+                                .addComponent(fRequired)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(orderId, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(23, 23, 23))))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -206,9 +215,13 @@ public class DeleteOrderFinal extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(orderId, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1)
                     .addComponent(jLabel9))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxOS, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10)
+                    .addComponent(jButton1))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();
@@ -230,7 +243,7 @@ public class DeleteOrderFinal extends javax.swing.JFrame {
         boolean cFound1 = false;
         String formattedCName = null;
         
-        String hostName = "77.68.122.181";
+        String hostName = "3.16.15.26";
         int port = 80;
         try {
 
@@ -282,6 +295,7 @@ public class DeleteOrderFinal extends javax.swing.JFrame {
                 String payment = variables[6];
                 String fittingRequired = variables[7];
                 String orderStartedDate = variables[8];
+                String orderStatus = variables[9];
                 
                 cName.setText(customerName);
                 vDetails.setText(vehicleDetails);
@@ -291,6 +305,9 @@ public class DeleteOrderFinal extends javax.swing.JFrame {
                 fRequired.setText(fittingRequired);
                 timestamp.setText(orderStartedDate);
                 orderId.setText(Id);
+                jComboBoxOS.addItem(orderStatus);
+                
+                
                 
 
                 
@@ -319,7 +336,7 @@ public class DeleteOrderFinal extends javax.swing.JFrame {
         protocolMessage += " Id ='" + orderId.getText();
         protocolMessage += "'";
 
-        String hostName = "77.68.122.181";
+        String hostName = "3.16.15.26";
         int port = 80;
 
         try {
@@ -404,7 +421,9 @@ public class DeleteOrderFinal extends javax.swing.JFrame {
     private javax.swing.JTextField cName;
     private javax.swing.JTextField fRequired;
     private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> jComboBoxOS;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
