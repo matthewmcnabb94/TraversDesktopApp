@@ -165,7 +165,7 @@ public class Reports extends javax.swing.JFrame {
             BufferedWriter bw20 = new BufferedWriter(fw);
             PrintWriter outp20 = new PrintWriter(bw20);
             
-            outp20.println("Order number, Customer Name, Date due, Vehicle details, Turbo part model, Price, Payment, Fitting required, Order started date");
+            outp20.println("Order number, Customer Name, Date due, Vehicle details, Turbo part model, Price, Payment, Fitting required, Order started date, Order status");
             outp20.flush();
             
             
@@ -182,9 +182,10 @@ public class Reports extends javax.swing.JFrame {
                 String payment = variables[6];
                 String fittingRequired = variables[7];
                 String orderStartedDate = variables[8];
+                String orderStatus = variables[9];
                 
                 System.out.println("Reply is: "+Id + "," + customerName + "," + date + "," + vehicleDetails + "," + turboPartNumber + "," + price + "," + payment + "," +fittingRequired + "," +orderStartedDate);
-                outp20.println(Id + "," + customerName + "," + date + "," + vehicleDetails + "," + turboPartNumber + "," + price + "," + payment + "," +fittingRequired + "," +orderStartedDate);
+                outp20.println(Id + "," + customerName + "," + date + "," + vehicleDetails + "," + turboPartNumber + "," + price + "," + payment + "," +fittingRequired + "," +orderStartedDate + "," +orderStatus);
                 outp20.flush();
                 
                 
